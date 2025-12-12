@@ -1,0 +1,225 @@
+<section class="testimonials-section animate-on-scroll animate-fade-up">
+  <div class="container">
+    <div class="testimonials__header">
+      <h2 class="testimonials__title">{{ section.settings.title | default: 'Müşterilerimiz Ne Diyor?' }}</h2>
+      <p class="testimonials__subtitle">{{ section.settings.subtitle | default: 'Binlerce mutlu müşterimizden bazıları' }}</p>
+    </div>
+
+    <div class="testimonials__grid animate-stagger">
+      {% for block in section.blocks %}
+        <div class="testimonial-card" {{ block.shopify_attributes }}>
+          <div class="testimonial-card__rating">
+            {% for i in (1..5) %}
+              <span class="star {% if i <= block.settings.rating %}filled{% endif %}">★</span>
+            {% endfor %}
+          </div>
+          <p class="testimonial-card__text">"{{ block.settings.text }}"</p>
+          <div class="testimonial-card__author">
+            {% if block.settings.image %}
+              <img src="{{ block.settings.image | image_url: width: 60 }}" alt="{{ block.settings.name }}" class="testimonial-card__image">
+            {% else %}
+              <div class="testimonial-card__avatar">{{ block.settings.name | slice: 0 }}</div>
+            {% endif %}
+            <div class="testimonial-card__info">
+              <p class="testimonial-card__name">{{ block.settings.name }}</p>
+              <p class="testimonial-card__title">{{ block.settings.job_title }}</p>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<style>
+  .testimonials-section {
+    padding: var(--spacing-xl) 0;
+    background-color: var(--color-bg-light);
+  }
+
+  .testimonials__header {
+    text-align: center;
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .testimonials__title {
+    font-size: 2.5rem;
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .testimonials__subtitle {
+    font-size: 1.125rem;
+    color: var(--color-text-light);
+  }
+
+  .testimonials__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--spacing-md);
+  }
+
+  .testimonial-card {
+    background: white;
+    padding: var(--spacing-lg);
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transition: var(--transition);
+  }
+
+  .testimonial-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  }
+
+  .testimonial-card__rating {
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .star {
+    color: #ddd;
+    font-size: 1.25rem;
+  }
+
+  .star.filled {
+    color: #f39c12;
+  }
+
+  .testimonial-card__text {
+    font-size: 1.125rem;
+    line-height: 1.8;
+    margin-bottom: var(--spacing-md);
+    font-style: italic;
+    color: var(--color-text);
+  }
+
+  .testimonial-card__author {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+  }
+
+  .testimonial-card__image,
+  .testimonial-card__avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .testimonial-card__avatar {
+    background: var(--color-primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+
+  .testimonial-card__name {
+    font-weight: 600;
+    margin: 0;
+    color: var(--color-secondary);
+  }
+
+  .testimonial-card__title {
+    font-size: 0.875rem;
+    color: var(--color-text-light);
+    margin: 0;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Müşteri Yorumları",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Başlık",
+      "default": "Müşterilerimiz Ne Diyor?"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Alt Başlık",
+      "default": "Binlerce mutlu müşterimizden bazıları"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Yorum",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Yorum Metni",
+          "default": "Harika bir hizmet! Ürünler kaliteli ve teslimat çok hızlı."
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "İsim",
+          "default": "Ahmet Yılmaz"
+        },
+        {
+          "type": "text",
+          "id": "job_title",
+          "label": "Ünvan",
+          "default": "CEO, TechCorp"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Fotoğraf"
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Puan",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Müşteri Yorumları",
+      "blocks": [
+        {
+          "type": "testimonial",
+          "settings": {
+            "text": "Harika bir hizmet! Ürünler kaliteli ve teslimat çok hızlı.",
+            "name": "Ahmet Yılmaz",
+            "job_title": "CEO, TechCorp",
+            "rating": 5
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "text": "Müşteri desteği mükemmel. Tüm sorularıma anında cevap verdiler.",
+            "name": "Ayşe Demir",
+            "job_title": "CTO, StartupCo",
+            "rating": 5
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "text": "Yıllardır kullanıyorum, kesinlikle tavsiye ediyorum!",
+            "name": "Mehmet Kaya",
+            "job_title": "Founder, InnovateTech",
+            "rating": 5
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+

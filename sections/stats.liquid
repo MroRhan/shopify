@@ -1,0 +1,127 @@
+<section class="stats-section animate-on-scroll animate-fade-up">
+  <div class="container">
+    <div class="stats__grid animate-stagger">
+      {% for block in section.blocks %}
+        <div class="stat-card" {{ block.shopify_attributes }}>
+          <div class="stat-card__icon">{{ block.settings.icon }}</div>
+          <div class="stat-card__number" data-count="{{ block.settings.number }}">0</div>
+          <div class="stat-card__label">{{ block.settings.label }}</div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<style>
+  .stats-section {
+    padding: var(--spacing-xl) 0;
+    background: linear-gradient(135deg, var(--color-primary) 0%, #0052a3 100%);
+    color: white;
+  }
+
+  .stats__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--spacing-lg);
+  }
+
+  .stat-card {
+    text-align: center;
+    padding: var(--spacing-md);
+  }
+
+  .stat-card__icon {
+    font-size: 3rem;
+    margin-bottom: var(--spacing-sm);
+    opacity: 0.9;
+  }
+
+  .stat-card__number {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: var(--spacing-xs);
+  }
+
+  .stat-card__label {
+    font-size: 1.125rem;
+    opacity: 0.9;
+  }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const counters = document.querySelectorAll('[data-count]');
+  
+  const animateCounter = (counter) => {
+    const target = parseInt(counter.getAttribute('data-count'));
+    const duration = 2000;
+    const step = target / (duration / 16);
+    let current = 0;
+
+    const timer = setInterval(() => {
+      current += step;
+      if (current >= target) {
+        counter.textContent = target.toLocaleString('tr-TR');
+        clearInterval(timer);
+      } else {
+        counter.textContent = Math.floor(current).toLocaleString('tr-TR');
+      }
+    }, 16);
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        animateCounter(entry.target);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  counters.forEach(counter => observer.observe(counter));
+});
+</script>
+
+{% schema %}
+{
+  "name": "İstatistikler",
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "İstatistik",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "İkon (Emoji)",
+          "default": "🎯"
+        },
+        {
+          "type": "text",
+          "id": "number",
+          "label": "Sayı",
+          "default": "1000"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Etiket",
+          "default": "Mutlu Müşteri"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "İstatistikler",
+      "blocks": [
+        {"type": "stat", "settings": {"icon": "😊", "number": "5000", "label": "Mutlu Müşteri"}},
+        {"type": "stat", "settings": {"icon": "🚀", "number": "10000", "label": "Proje Tamamlandı"}},
+        {"type": "stat", "settings": {"icon": "⭐", "number": "4.9", "label": "Ortalama Puan"}},
+        {"type": "stat", "settings": {"icon": "🏆", "number": "50", "label": "Ödül Kazandı"}}
+      ]
+    }
+  ]
+}
+{% endschema %}
+
