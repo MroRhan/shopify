@@ -1,0 +1,78 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "current": {
+    "logo_text": "Test",
+    "sections": {
+      "header": {
+        "type": "header",
+        "settings": {}
+      },
+      "hero": {
+        "type": "hero",
+        "settings": {
+          "badge_text": "Yeni Teknolojiler",
+          "title": "Yenilikçi Teknoloji Çözümleri",
+          "subtitle": "İşletmeleri dijital çağ için en son teknoloji ve yenilikçi çözümlerle güçlendiriyoruz.",
+          "cta_text": "Ürünleri Keşfet",
+          "cta_secondary_text": "Hemen Başla",
+          "show_features": true,
+          "feature_1": "Ücretsiz Kargo",
+          "feature_2": "30 Gün İade",
+          "feature_3": "Güvenli Ödeme"
+        }
+      },
+      "products": {
+        "type": "products",
+        "settings": {
+          "title": "Ürünlerimiz",
+          "subtitle": "En popüler ürünlerimizi keşfedin",
+          "collection": "",
+          "products_to_show": 8,
+          "show_view_all": true,
+          "view_all_text": "Tümünü Gör",
+          "empty_text": "Henüz ürün bulunmamaktadır."
+        }
+      },
+      "features": {
+        "type": "features",
+        "settings": {
+          "title": "Ürünlerimiz ve Hizmetlerimiz",
+          "subtitle": "İşletmenizi dönüştürmek için tasarlanmış yenilikçi teknoloji çözümlerimizi keşfedin."
+        }
+      },
+      "about": {
+        "type": "about",
+        "settings": {
+          "title": "TechCorp Hakkında",
+          "text": "İş büyümesini ve dijital dönüşümü destekleyen yenilikçi çözümler sunmaya adanmış önde gelen bir teknoloji şirketiyiz.",
+          "stat1_number": "500+",
+          "stat1_label": "Mutlu Müşteri",
+          "stat2_number": "1000+",
+          "stat2_label": "Tamamlanan Proje",
+          "stat3_number": "50+",
+          "stat3_label": "Ekip Üyesi"
+        }
+      },
+      "contact": {
+        "type": "contact",
+        "settings": {
+          "title": "İletişime Geçin",
+          "subtitle": "Bir sorunuz mu var veya birlikte çalışmak mı istiyorsunuz? Sizden haber almak isteriz."
+        }
+      },
+      "footer": {
+        "type": "footer",
+        "settings": {}
+      }
+    },
+    "content_for_index": []
+  }
+}
