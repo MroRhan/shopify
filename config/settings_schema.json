@@ -1,5 +1,18 @@
 [
   {
+    "name": "Tema Bilgileri",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Tema Sürümü: 1.0.0"
+      },
+      {
+        "type": "paragraph",
+        "content": "Bu tema teknoloji firmaları için özel olarak tasarlanmıştır."
+      }
+    ]
+  },
+  {
     "name": "Tema Ayarları",
     "settings": [
       {

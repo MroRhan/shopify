@@ -9,7 +9,17 @@
     <nav class="header__nav" role="navigation" aria-label="Primary">
       <ul class="header__nav-list">
         <li><a href="{{ routes.root_url }}">Ana Sayfa</a></li>
-        <li><a href="#products">Ürünler</a></li>
+        <li class="header__nav-dropdown">
+          <a href="{{ routes.all_products_collection_url }}">Ürünler</a>
+          <ul class="header__dropdown">
+            <li><a href="{{ routes.all_products_collection_url }}">Tüm Ürünler</a></li>
+            {% for collection in collections %}
+              {% if collection.products_count > 0 %}
+                <li><a href="{{ collection.url }}">{{ collection.title }}</a></li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        </li>
         <li><a href="#about">Hakkımızda</a></li>
         <li><a href="#contact">İletişim</a></li>
       </ul>

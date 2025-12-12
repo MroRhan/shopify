@@ -1,0 +1,148 @@
+<div class="collections-wrapper">
+  <div class="container">
+    <div class="collections-header">
+      <h1 class="collections-title">Tüm Kategoriler</h1>
+      <p class="collections-subtitle">Ürün kategorilerimize göz atın</p>
+    </div>
+
+    {% if collections.size > 0 %}
+      <div class="collections-grid">
+        {% for collection in collections %}
+          {% if collection.products_count > 0 %}
+            <div class="collection-card">
+              <a href="{{ collection.url }}" class="collection-card__link">
+                <div class="collection-card__image">
+                  {% if collection.image %}
+                    <img src="{{ collection.image | image_url: width: 600 }}" alt="{{ collection.title | escape }}">
+                  {% elsif collection.products.first.featured_image %}
+                    <img src="{{ collection.products.first.featured_image | image_url: width: 600 }}" alt="{{ collection.title | escape }}">
+                  {% else %}
+                    <div class="collection-card__placeholder">
+                      <svg width="400" height="300" viewBox="0 0 400 300" fill="none">
+                        <rect width="400" height="300" fill="var(--color-bg-light)"/>
+                        <text x="200" y="150" text-anchor="middle" fill="var(--color-text-light)" font-size="18">{{ collection.title }}</text>
+                      </svg>
+                    </div>
+                  {% endif %}
+                  <div class="collection-card__overlay">
+                    <span class="collection-card__count">{{ collection.products_count }} ürün</span>
+                  </div>
+                </div>
+                <div class="collection-card__info">
+                  <h3 class="collection-card__title">{{ collection.title }}</h3>
+                  {% if collection.description != blank %}
+                    <p class="collection-card__description">{{ collection.description | strip_html | truncate: 100 }}</p>
+                  {% endif %}
+                </div>
+              </a>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="collections-empty">
+        <p>Henüz kategori bulunmamaktadır.</p>
+        <a href="{{ routes.root_url }}" class="button button--primary">Ana Sayfaya Dön</a>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<style>
+  .collections-wrapper {
+    padding: var(--spacing-xl) 0;
+  }
+  .collections-header {
+    text-align: center;
+    margin-bottom: var(--spacing-lg);
+  }
+  .collections-title {
+    font-size: 2.5rem;
+    margin-bottom: var(--spacing-sm);
+  }
+  .collections-subtitle {
+    font-size: 1.125rem;
+    color: var(--color-text-light);
+  }
+  .collections-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--spacing-lg);
+  }
+  .collection-card {
+    background-color: var(--color-bg-light);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: var(--transition);
+    border: 1px solid var(--color-border);
+  }
+  .collection-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+  }
+  .collection-card__link {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+  }
+  .collection-card__image {
+    position: relative;
+    width: 100%;
+    height: 250px;
+    overflow: hidden;
+  }
+  .collection-card__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: var(--transition);
+  }
+  .collection-card:hover .collection-card__image img {
+    transform: scale(1.1);
+  }
+  .collection-card__placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .collection-card__overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+    padding: var(--spacing-md);
+    color: white;
+  }
+  .collection-card__count {
+    font-weight: 600;
+  }
+  .collection-card__info {
+    padding: var(--spacing-md);
+  }
+  .collection-card__title {
+    font-size: 1.5rem;
+    margin-bottom: var(--spacing-xs);
+  }
+  .collection-card__description {
+    color: var(--color-text-light);
+    font-size: 0.9rem;
+  }
+  .collections-empty {
+    text-align: center;
+    padding: var(--spacing-xl);
+  }
+  .collections-empty p {
+    font-size: 1.25rem;
+    margin-bottom: var(--spacing-md);
+    color: var(--color-text-light);
+  }
+  @media (max-width: 768px) {
+    .collections-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+

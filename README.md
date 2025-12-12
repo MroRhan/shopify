@@ -2,6 +2,8 @@
 
 Modern, professional Shopify theme designed for technology companies.
 
+**Version:** 1.0.0
+
 ## Features
 
 - 🎨 Modern, clean design
@@ -25,6 +27,7 @@ shopify/
 ## Sections
 
 - **Hero**: Eye-catching hero section with CTA buttons
+- **Products**: Featured products showcase on homepage
 - **Features**: Product/services showcase grid
 - **About**: Company information with statistics
 - **Contact**: Contact form and information
@@ -46,6 +49,10 @@ All colors, text, and content can be customized through the Shopify theme editor
 - Firefox (latest)
 - Safari (latest)
 - Edge (latest)
+
+## Version History
+
+See [CHANGELOG.md](CHANGELOG.md) for detailed version history.
 
 ## License
 

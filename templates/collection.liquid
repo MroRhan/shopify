@@ -1,5 +1,7 @@
+{% paginate collection.products by 12 %}
 <div class="collection-wrapper">
   <div class="container">
+    <!-- Collection Header -->
     <div class="collection-header">
       <h1 class="collection-title">{{ collection.title }}</h1>
       {% if collection.description != blank %}
@@ -7,39 +9,187 @@
       {% endif %}
     </div>
 
-    {% if collection.products.size > 0 %}
-      <div class="products-grid">
-        {% for product in collection.products %}
-          <div class="product-card">
-            <a href="{{ product.url }}" class="product-card__link">
-              {% if product.featured_image %}
-                <img src="{{ product.featured_image | image_url: width: 400 }}" alt="{{ product.featured_image.alt | escape }}" class="product-card__image">
-              {% else %}
-                <div class="product-card__placeholder">
-                  <svg width="400" height="400" viewBox="0 0 400 400" fill="none">
-                    <rect width="400" height="400" fill="#f0f0f0"/>
-                  </svg>
-                </div>
-              {% endif %}
-              <h3 class="product-card__title">{{ product.title }}</h3>
-              <div class="product-card__price">{{ product.price | money }}</div>
-            </a>
+    <div class="collection-layout">
+      <!-- Sidebar Filters -->
+      <aside class="collection-sidebar">
+        <!-- Categories -->
+        <div class="filter-group">
+          <h3 class="filter-title">Kategoriler</h3>
+          <ul class="filter-list">
+            <li class="filter-item {% unless current_tags %}active{% endunless %}">
+              <a href="{{ collection.url }}">Tümü</a>
+            </li>
+            {% for tag in collection.all_tags %}
+              <li class="filter-item {% if current_tags contains tag %}active{% endif %}">
+                {% if current_tags contains tag %}
+                  <a href="{{ collection.url }}">{{ tag }}</a>
+                {% else %}
+                  <a href="{{ collection.url }}/{{ tag | handle }}">{{ tag }}</a>
+                {% endif %}
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <!-- Price Range -->
+        <div class="filter-group">
+          <h3 class="filter-title">Fiyat Aralığı</h3>
+          <div class="price-filters">
+            <a href="{{ collection.url }}" class="price-filter">Tümü</a>
+            <a href="{{ collection.url }}?filter.v.price.lte=5000" class="price-filter">0 - 50₺</a>
+            <a href="{{ collection.url }}?filter.v.price.gte=5000&filter.v.price.lte=10000" class="price-filter">50₺ - 100₺</a>
+            <a href="{{ collection.url }}?filter.v.price.gte=10000&filter.v.price.lte=20000" class="price-filter">100₺ - 200₺</a>
+            <a href="{{ collection.url }}?filter.v.price.gte=20000" class="price-filter">200₺+</a>
           </div>
-        {% endfor %}
+        </div>
+
+        <!-- Collections/Categories List -->
+        <div class="filter-group">
+          <h3 class="filter-title">Diğer Kategoriler</h3>
+          <ul class="filter-list">
+            {% for collection_item in collections %}
+              {% if collection_item.products_count > 0 %}
+                <li class="filter-item {% if collection.handle == collection_item.handle %}active{% endif %}">
+                  <a href="{{ collection_item.url }}">
+                    {{ collection_item.title }}
+                    <span class="count">({{ collection_item.products_count }})</span>
+                  </a>
+                </li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        </div>
+      </aside>
+
+      <!-- Products Grid -->
+      <div class="collection-main">
+        <!-- Sort and View Options -->
+        <div class="collection-toolbar">
+          <div class="collection-count">
+            <span>{{ collection.products_count }} ürün</span>
+          </div>
+          <div class="collection-sort">
+            <label for="sort-by">Sırala:</label>
+            <select id="sort-by" class="sort-select">
+              <option value="manual">Öne Çıkanlar</option>
+              <option value="best-selling">En Çok Satanlar</option>
+              <option value="title-ascending">İsim (A-Z)</option>
+              <option value="title-descending">İsim (Z-A)</option>
+              <option value="price-ascending">Fiyat (Düşük-Yüksek)</option>
+              <option value="price-descending">Fiyat (Yüksek-Düşük)</option>
+              <option value="created-descending">Yeni Ürünler</option>
+            </select>
+          </div>
+        </div>
+
+        {% if collection.products.size > 0 %}
+          <div class="products-grid">
+            {% for product in collection.products %}
+              <div class="product-card">
+                <a href="{{ product.url }}" class="product-card__link">
+                  <div class="product-card__image-wrapper">
+                    {% if product.featured_image %}
+                      <img src="{{ product.featured_image | image_url: width: 400 }}" alt="{{ product.featured_image.alt | escape }}" class="product-card__image">
+                    {% else %}
+                      <div class="product-card__placeholder">
+                        <svg width="400" height="400" viewBox="0 0 400 400" fill="none">
+                          <rect width="400" height="400" fill="#f0f0f0"/>
+                          <text x="200" y="200" text-anchor="middle" fill="#999" font-size="18">Görsel Yok</text>
+                        </svg>
+                      </div>
+                    {% endif %}
+                    
+                    {% if product.compare_at_price > product.price %}
+                      <span class="product-card__badge">İndirim</span>
+                    {% endif %}
+                  </div>
+
+                  <div class="product-card__info">
+                    {% if product.vendor != blank %}
+                      <p class="product-card__vendor">{{ product.vendor }}</p>
+                    {% endif %}
+                    <h3 class="product-card__title">{{ product.title }}</h3>
+                    
+                    <div class="product-card__price-wrapper">
+                      {% if product.compare_at_price > product.price %}
+                        <span class="product-card__price-compare">{{ product.compare_at_price | money }}</span>
+                        <span class="product-card__price-sale">{{ product.price | money }}</span>
+                      {% else %}
+                        <span class="product-card__price">{{ product.price | money }}</span>
+                      {% endif %}
+                    </div>
+
+                    {% unless product.available %}
+                      <span class="product-card__sold-out">Tükendi</span>
+                    {% endunless %}
+                  </div>
+                </a>
+                
+                <form action="{{ routes.cart_add_url }}" method="post" class="product-card__form">
+                  <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                  <button 
+                    type="submit" 
+                    class="button button--small product-card__add-to-cart"
+                    {% unless product.available %}disabled{% endunless %}
+                  >
+                    {% if product.available %}
+                      Sepete Ekle
+                    {% else %}
+                      Tükendi
+                    {% endif %}
+                  </button>
+                </form>
+              </div>
+            {% endfor %}
+          </div>
+
+          <!-- Pagination -->
+          {% if paginate.pages > 1 %}
+            <div class="pagination">
+              {% if paginate.previous %}
+                <a href="{{ paginate.previous.url }}" class="pagination__item">‹ Önceki</a>
+              {% endif %}
+
+              {% for part in paginate.parts %}
+                {% if part.is_link %}
+                  <a href="{{ part.url }}" class="pagination__item">{{ part.title }}</a>
+                {% else %}
+                  {% if part.title == paginate.current_page %}
+                    <span class="pagination__item active">{{ part.title }}</span>
+                  {% else %}
+                    <span class="pagination__item">{{ part.title }}</span>
+                  {% endif %}
+                {% endif %}
+              {% endfor %}
+
+              {% if paginate.next %}
+                <a href="{{ paginate.next.url }}" class="pagination__item">Sonraki ›</a>
+              {% endif %}
+            </div>
+          {% endif %}
+        {% else %}
+          <div class="collection-empty">
+            <p>Bu koleksiyonda ürün bulunamadı.</p>
+            <a href="{{ routes.root_url }}" class="button button--primary">Alışverişe Devam Et</a>
+          </div>
+        {% endif %}
       </div>
-    {% else %}
-      <p class="collection-empty">Bu koleksiyonda ürün bulunamadı.</p>
-    {% endif %}
+    </div>
   </div>
 </div>
+{% endpaginate %}
 
 <style>
   .collection-wrapper {
     padding: var(--spacing-xl) 0;
   }
+
+  /* Header */
   .collection-header {
     text-align: center;
     margin-bottom: var(--spacing-lg);
+    padding-bottom: var(--spacing-lg);
+    border-bottom: 2px solid var(--color-border);
   }
   .collection-title {
     font-size: 2.5rem;
@@ -48,7 +198,106 @@
   .collection-description {
     font-size: 1.125rem;
     color: var(--color-text-light);
+    max-width: 800px;
+    margin: 0 auto;
   }
+
+  /* Layout */
+  .collection-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: var(--spacing-lg);
+  }
+
+  /* Sidebar */
+  .collection-sidebar {
+    position: sticky;
+    top: 100px;
+    align-self: start;
+  }
+  .filter-group {
+    margin-bottom: var(--spacing-lg);
+    padding-bottom: var(--spacing-lg);
+    border-bottom: 1px solid var(--color-border);
+  }
+  .filter-group:last-child {
+    border-bottom: none;
+  }
+  .filter-title {
+    font-size: 1.125rem;
+    margin-bottom: var(--spacing-sm);
+    font-weight: 600;
+  }
+  .filter-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .filter-item {
+    margin-bottom: var(--spacing-xs);
+  }
+  .filter-item a {
+    display: block;
+    padding: var(--spacing-xs);
+    color: var(--color-text);
+    text-decoration: none;
+    border-radius: 6px;
+    transition: var(--transition);
+  }
+  .filter-item a:hover,
+  .filter-item.active a {
+    background-color: var(--color-bg-light);
+    color: var(--color-primary);
+  }
+  .filter-item .count {
+    color: var(--color-text-light);
+    font-size: 0.875rem;
+    float: right;
+  }
+  .price-filters {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+  }
+  .price-filter {
+    padding: var(--spacing-xs);
+    color: var(--color-text);
+    text-decoration: none;
+    border-radius: 6px;
+    transition: var(--transition);
+  }
+  .price-filter:hover {
+    background-color: var(--color-bg-light);
+    color: var(--color-primary);
+  }
+
+  /* Toolbar */
+  .collection-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+    padding: var(--spacing-sm);
+    background-color: var(--color-bg-light);
+    border-radius: 8px;
+  }
+  .collection-count {
+    font-weight: 500;
+  }
+  .collection-sort {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+  }
+  .sort-select {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    background-color: var(--color-bg);
+    cursor: pointer;
+  }
+
+  /* Products Grid */
   .products-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -60,6 +309,8 @@
     overflow: hidden;
     transition: var(--transition);
     border: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
   }
   .product-card:hover {
     transform: translateY(-5px);
@@ -68,31 +319,193 @@
   .product-card__link {
     display: block;
     color: inherit;
+    text-decoration: none;
+    flex: 1;
+  }
+  .product-card__image-wrapper {
+    position: relative;
+    width: 100%;
+    height: 250px;
+    overflow: hidden;
   }
   .product-card__image {
     width: 100%;
-    height: 250px;
+    height: 100%;
     object-fit: cover;
+    transition: var(--transition);
+  }
+  .product-card:hover .product-card__image {
+    transform: scale(1.05);
   }
   .product-card__placeholder {
     width: 100%;
-    height: 250px;
+    height: 100%;
     background-color: var(--color-bg-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .product-card__badge {
+    position: absolute;
+    top: var(--spacing-xs);
+    right: var(--spacing-xs);
+    background-color: #e74c3c;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+  .product-card__info {
+    padding: var(--spacing-sm);
+  }
+  .product-card__vendor {
+    font-size: 0.875rem;
+    color: var(--color-text-light);
+    margin-bottom: 4px;
   }
   .product-card__title {
-    padding: var(--spacing-sm);
-    font-size: 1.25rem;
+    font-size: 1.125rem;
+    margin-bottom: var(--spacing-xs);
+    color: var(--color-secondary);
+  }
+  .product-card__price-wrapper {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
     margin-bottom: var(--spacing-xs);
   }
   .product-card__price {
-    padding: 0 var(--spacing-sm) var(--spacing-sm);
     font-weight: 700;
     color: var(--color-primary);
+    font-size: 1.125rem;
   }
+  .product-card__price-compare {
+    font-size: 0.875rem;
+    color: var(--color-text-light);
+    text-decoration: line-through;
+  }
+  .product-card__price-sale {
+    font-weight: 700;
+    color: #e74c3c;
+    font-size: 1.125rem;
+  }
+  .product-card__sold-out {
+    display: inline-block;
+    padding: 4px 8px;
+    background-color: var(--color-text-light);
+    color: white;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+  .product-card__form {
+    padding: 0 var(--spacing-sm) var(--spacing-sm);
+  }
+  .product-card__add-to-cart {
+    width: 100%;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: 0.9rem;
+  }
+  .button--small {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: 0.9rem;
+  }
+
+  /* Pagination */
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--spacing-xs);
+    margin-top: var(--spacing-lg);
+  }
+  .pagination__item {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    color: var(--color-text);
+    text-decoration: none;
+    transition: var(--transition);
+  }
+  .pagination__item:hover {
+    background-color: var(--color-primary);
+    color: white;
+    border-color: var(--color-primary);
+  }
+  .pagination__item.active {
+    background-color: var(--color-primary);
+    color: white;
+    border-color: var(--color-primary);
+  }
+
+  /* Empty State */
   .collection-empty {
     text-align: center;
     padding: var(--spacing-xl);
+    background-color: var(--color-bg-light);
+    border-radius: 12px;
+  }
+  .collection-empty p {
+    font-size: 1.25rem;
     color: var(--color-text-light);
+    margin-bottom: var(--spacing-md);
+  }
+
+  /* Responsive */
+  @media (max-width: 992px) {
+    .collection-layout {
+      grid-template-columns: 1fr;
+    }
+    .collection-sidebar {
+      position: static;
+      border-bottom: 2px solid var(--color-border);
+      padding-bottom: var(--spacing-lg);
+      margin-bottom: var(--spacing-lg);
+    }
+    .filter-group {
+      display: inline-block;
+      width: calc(50% - var(--spacing-xs));
+      margin-right: var(--spacing-sm);
+      vertical-align: top;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .products-grid {
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: var(--spacing-sm);
+    }
+    .collection-toolbar {
+      flex-direction: column;
+      gap: var(--spacing-sm);
+      align-items: flex-start;
+    }
+    .filter-group {
+      display: block;
+      width: 100%;
+      margin-right: 0;
+    }
   }
 </style>
 
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Sort functionality
+    const sortSelect = document.getElementById('sort-by');
+    if (sortSelect) {
+      sortSelect.addEventListener('change', function() {
+        const url = new URL(window.location.href);
+        url.searchParams.set('sort_by', this.value);
+        window.location.href = url.toString();
+      });
+
+      // Set current sort value from URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const currentSort = urlParams.get('sort_by');
+      if (currentSort) {
+        sortSelect.value = currentSort;
+      }
+    }
+  });
+</script>
