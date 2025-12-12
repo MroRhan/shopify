@@ -1,0 +1,44 @@
+[
+  {
+    "name": "Tema Ayarları",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Renk Ayarları"
+      },
+      {
+        "type": "color",
+        "id": "primary_color",
+        "label": "Ana Renk",
+        "default": "#0066CC"
+      },
+      {
+        "type": "color",
+        "id": "secondary_color",
+        "label": "İkincil Renk",
+        "default": "#333333"
+      },
+      {
+        "type": "header",
+        "content": "Üst Bilgi Ayarları"
+      },
+      {
+        "type": "text",
+        "id": "logo_text",
+        "label": "Logo Metni",
+        "default": "TechCorp"
+      },
+      {
+        "type": "header",
+        "content": "Alt Bilgi Ayarları"
+      },
+      {
+        "type": "text",
+        "id": "footer_text",
+        "label": "Alt Bilgi Metni",
+        "default": "© 2024 TechCorp. Tüm hakları saklıdır."
+      }
+    ]
+  }
+]
+

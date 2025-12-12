@@ -1,0 +1,69 @@
+<section class="contact-section" id="contact">
+  <div class="container">
+    <div class="contact">
+      <div class="contact__header">
+        <h2 class="contact__title">{{ section.settings.title | default: 'İletişime Geçin' }}</h2>
+        <p class="contact__subtitle">{{ section.settings.subtitle | default: 'Bir sorunuz mu var veya birlikte çalışmak mı istiyorsunuz? Sizden haber almak isteriz.' }}</p>
+      </div>
+
+      <div class="contact__content">
+        <div class="contact__info">
+          <div class="contact__item">
+            <h3>E-posta</h3>
+            <p>info@techcorp.com</p>
+          </div>
+          <div class="contact__item">
+            <h3>Telefon</h3>
+            <p>+90 (555) 123-4567</p>
+          </div>
+          <div class="contact__item">
+            <h3>Adres</h3>
+            <p>Teknoloji Caddesi No:123<br>İstanbul, Türkiye</p>
+          </div>
+        </div>
+
+        <form class="contact__form" action="{{ routes.contact_url }}" method="post">
+          <div class="form__group">
+            <label for="contact-name">Ad Soyad</label>
+            <input type="text" id="contact-name" name="contact[name]" required>
+          </div>
+          <div class="form__group">
+            <label for="contact-email">E-posta</label>
+            <input type="email" id="contact-email" name="contact[email]" required>
+          </div>
+          <div class="form__group">
+            <label for="contact-message">Mesaj</label>
+            <textarea id="contact-message" name="contact[body]" rows="5" required></textarea>
+          </div>
+          <button type="submit" class="button button--primary">Mesaj Gönder</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Contact",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "İletişime Geçin"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Alt Başlık",
+      "default": "Bir sorunuz mu var veya birlikte çalışmak mı istiyorsunuz? Sizden haber almak isteriz."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contact"
+    }
+  ]
+}
+{% endschema %}
+

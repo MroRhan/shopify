@@ -1,0 +1,150 @@
+<div class="cart-wrapper">
+  <div class="container">
+    <h1 class="cart-title">Alışveriş Sepeti</h1>
+
+    {% if cart.item_count > 0 %}
+      <form action="{{ routes.cart_url }}" method="post" class="cart-form">
+        <div class="cart-items">
+          {% for item in cart.items %}
+            <div class="cart-item">
+              <div class="cart-item__image">
+                {% if item.image %}
+                  <img src="{{ item.image | image_url: width: 150 }}" alt="{{ item.title | escape }}">
+                {% endif %}
+              </div>
+              <div class="cart-item__details">
+                <h3 class="cart-item__title">{{ item.product.title }}</h3>
+                {% if item.variant.title != 'Default Title' %}
+                  <p class="cart-item__variant">{{ item.variant.title }}</p>
+                {% endif %}
+                <div class="cart-item__price">{{ item.final_price | money }}</div>
+              </div>
+              <div class="cart-item__quantity">
+                <label for="updates_{{ item.key }}" class="visually-hidden">Miktar</label>
+                <input type="number" name="updates[]" value="{{ item.quantity }}" min="0" id="updates_{{ item.key }}">
+              </div>
+              <div class="cart-item__total">{{ item.final_line_price | money }}</div>
+              <div class="cart-item__remove">
+                <a href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity=0" class="cart-item__remove-link">Kaldır</a>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+
+        <div class="cart-footer">
+          <div class="cart-total">
+            <div class="cart-total__subtotal">
+              <span>Ara Toplam:</span>
+              <span>{{ cart.total_price | money }}</span>
+            </div>
+            <p class="cart-total__note">Vergiler ve kargo ücreti ödeme sayfasında hesaplanacaktır</p>
+          </div>
+          <div class="cart-actions">
+            <button type="submit" name="update" class="button button--secondary">Sepeti Güncelle</button>
+            <button type="submit" name="checkout" class="button button--primary">Ödemeye Geç</button>
+          </div>
+        </div>
+      </form>
+    {% else %}
+      <div class="cart-empty">
+        <p>Sepetiniz boş.</p>
+        <a href="{{ routes.root_url }}" class="button button--primary">Alışverişe Devam Et</a>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<style>
+  .cart-wrapper {
+    padding: var(--spacing-xl) 0;
+  }
+  .cart-title {
+    font-size: 2.5rem;
+    margin-bottom: var(--spacing-lg);
+  }
+  .cart-item {
+    display: grid;
+    grid-template-columns: 150px 1fr 120px 100px 80px;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+    border-bottom: 1px solid var(--color-border);
+    align-items: center;
+  }
+  .cart-item__image img {
+    width: 100%;
+    border-radius: 8px;
+  }
+  .cart-item__title {
+    font-size: 1.25rem;
+    margin-bottom: var(--spacing-xs);
+  }
+  .cart-item__variant {
+    color: var(--color-text-light);
+    font-size: 0.9rem;
+  }
+  .cart-item__price {
+    color: var(--color-primary);
+    font-weight: 600;
+  }
+  .cart-item__quantity input {
+    width: 80px;
+    padding: var(--spacing-xs);
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+  }
+  .cart-item__total {
+    font-weight: 700;
+  }
+  .cart-item__remove-link {
+    color: var(--color-text-light);
+    font-size: 0.9rem;
+  }
+  .cart-footer {
+    margin-top: var(--spacing-lg);
+    padding-top: var(--spacing-md);
+    border-top: 2px solid var(--color-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+  }
+  .cart-total__subtotal {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: var(--spacing-xs);
+  }
+  .cart-total__note {
+    color: var(--color-text-light);
+    font-size: 0.9rem;
+  }
+  .cart-actions {
+    display: flex;
+    gap: var(--spacing-sm);
+  }
+  .cart-empty {
+    text-align: center;
+    padding: var(--spacing-xl);
+  }
+  .cart-empty p {
+    font-size: 1.25rem;
+    margin-bottom: var(--spacing-md);
+  }
+  @media (max-width: 768px) {
+    .cart-item {
+      grid-template-columns: 1fr;
+      text-align: center;
+    }
+    .cart-footer {
+      flex-direction: column;
+    }
+    .cart-actions {
+      width: 100%;
+    }
+    .cart-actions .button {
+      flex: 1;
+    }
+  }
+</style>
+

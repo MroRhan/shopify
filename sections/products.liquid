@@ -1,0 +1,205 @@
+<section class="products-section" id="products">
+  <div class="container">
+    <div class="products__header">
+      <h2 class="products__title">{{ section.settings.title | default: 'Ürünlerimiz' }}</h2>
+      <p class="products__subtitle">{{ section.settings.subtitle | default: 'En popüler ürünlerimizi keşfedin' }}</p>
+    </div>
+
+    {% assign collection = collections[section.settings.collection] | default: collections.all %}
+    
+    {% if collection.products.size > 0 %}
+      <div class="products__grid">
+        {% for product in collection.products limit: section.settings.products_to_show %}
+          <div class="product-card">
+            <a href="{{ product.url }}" class="product-card__link">
+              {% if product.featured_image %}
+                <div class="product-card__image-wrapper">
+                  <img src="{{ product.featured_image | image_url: width: 400 }}" alt="{{ product.featured_image.alt | escape }}" class="product-card__image">
+                </div>
+              {% else %}
+                <div class="product-card__placeholder">
+                  <svg width="400" height="400" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="400" height="400" fill="#f0f0f0"/>
+                    <text x="200" y="200" text-anchor="middle" fill="#999" font-size="18">Görsel Yok</text>
+                  </svg>
+                </div>
+              {% endif %}
+              <div class="product-card__info">
+                <h3 class="product-card__title">{{ product.title }}</h3>
+                <div class="product-card__price">{{ product.price | money }}</div>
+                {% if product.compare_at_price > product.price %}
+                  <div class="product-card__compare-price">{{ product.compare_at_price | money }}</div>
+                {% endif %}
+              </div>
+            </a>
+          </div>
+        {% endfor %}
+      </div>
+
+      {% if section.settings.show_view_all %}
+        <div class="products__footer">
+          <a href="{{ collection.url }}" class="button button--secondary">{{ section.settings.view_all_text | default: 'Tümünü Gör' }}</a>
+        </div>
+      {% endif %}
+    {% else %}
+      <p class="products__empty">{{ section.settings.empty_text | default: 'Henüz ürün bulunmamaktadır.' }}</p>
+    {% endif %}
+  </div>
+</section>
+
+<style>
+  .products-section {
+    padding: var(--spacing-xl) 0;
+    background-color: var(--color-bg);
+  }
+  .products__header {
+    text-align: center;
+    margin-bottom: var(--spacing-lg);
+  }
+  .products__title {
+    font-size: 2.5rem;
+    margin-bottom: var(--spacing-sm);
+  }
+  .products__subtitle {
+    font-size: 1.125rem;
+    color: var(--color-text-light);
+  }
+  .products__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+  }
+  .product-card {
+    background-color: var(--color-bg-light);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: var(--transition);
+    border: 1px solid var(--color-border);
+  }
+  .product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  }
+  .product-card__link {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+  }
+  .product-card__image-wrapper {
+    width: 100%;
+    height: 250px;
+    overflow: hidden;
+    background-color: var(--color-bg-light);
+  }
+  .product-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: var(--transition);
+  }
+  .product-card:hover .product-card__image {
+    transform: scale(1.05);
+  }
+  .product-card__placeholder {
+    width: 100%;
+    height: 250px;
+    background-color: var(--color-bg-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .product-card__info {
+    padding: var(--spacing-sm);
+  }
+  .product-card__title {
+    font-size: 1.25rem;
+    margin-bottom: var(--spacing-xs);
+    color: var(--color-secondary);
+  }
+  .product-card__price {
+    font-weight: 700;
+    color: var(--color-primary);
+    font-size: 1.125rem;
+  }
+  .product-card__compare-price {
+    font-size: 0.9rem;
+    color: var(--color-text-light);
+    text-decoration: line-through;
+    margin-left: var(--spacing-xs);
+  }
+  .products__footer {
+    text-align: center;
+    margin-top: var(--spacing-lg);
+  }
+  .products__empty {
+    text-align: center;
+    padding: var(--spacing-xl);
+    color: var(--color-text-light);
+    font-size: 1.125rem;
+  }
+  @media (max-width: 768px) {
+    .products__grid {
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Ürünler",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Başlık",
+      "default": "Ürünlerimiz"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Alt Başlık",
+      "default": "En popüler ürünlerimizi keşfedin"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Koleksiyon",
+      "info": "Gösterilecek ürün koleksiyonunu seçin. Boş bırakılırsa tüm ürünler gösterilir."
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Gösterilecek Ürün Sayısı",
+      "min": 4,
+      "max": 24,
+      "step": 4,
+      "default": 8
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "\"Tümünü Gör\" Butonunu Göster",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "view_all_text",
+      "label": "\"Tümünü Gör\" Buton Metni",
+      "default": "Tümünü Gör"
+    },
+    {
+      "type": "text",
+      "id": "empty_text",
+      "label": "Boş Durum Metni",
+      "default": "Henüz ürün bulunmamaktadır."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ürünler"
+    }
+  ]
+}
+{% endschema %}
+

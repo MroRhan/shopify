@@ -1,0 +1,95 @@
+<section class="about-section" id="about">
+  <div class="container">
+    <div class="about">
+      <div class="about__content">
+        <h2 class="about__title">{{ section.settings.title | default: 'TechCorp Hakkında' }}</h2>
+        <p class="about__text">{{ section.settings.text | default: 'İş büyümesini ve dijital dönüşümü destekleyen yenilikçi çözümler sunmaya adanmış önde gelen bir teknoloji şirketiyiz. Yıllarca deneyim ve uzman profesyonellerden oluşan ekibimizle, işletmelerin modern teknolojinin karmaşıklıklarında yol almasına yardımcı oluyoruz.' }}</p>
+        <div class="about__stats">
+          <div class="stat">
+            <div class="stat__number">{{ section.settings.stat1_number | default: '500+' }}</div>
+            <div class="stat__label">{{ section.settings.stat1_label | default: 'Mutlu Müşteri' }}</div>
+          </div>
+          <div class="stat">
+            <div class="stat__number">{{ section.settings.stat2_number | default: '1000+' }}</div>
+            <div class="stat__label">{{ section.settings.stat2_label | default: 'Tamamlanan Proje' }}</div>
+          </div>
+          <div class="stat">
+            <div class="stat__number">{{ section.settings.stat3_number | default: '50+' }}</div>
+            <div class="stat__label">{{ section.settings.stat3_label | default: 'Ekip Üyesi' }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="about__image">
+        <div class="about__placeholder">
+          <svg width="500" height="400" viewBox="0 0 500 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="500" height="400" fill="#f5f5f5"/>
+            <rect x="50" y="50" width="400" height="300" rx="10" fill="var(--color-primary)" opacity="0.1"/>
+            <circle cx="250" cy="200" r="80" fill="var(--color-primary)" opacity="0.2"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "About",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "TechCorp Hakkında"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Açıklama",
+      "default": "İş büyümesini ve dijital dönüşümü destekleyen yenilikçi çözümler sunmaya adanmış önde gelen bir teknoloji şirketiyiz."
+    },
+    {
+      "type": "text",
+      "id": "stat1_number",
+      "label": "İstatistik 1 Sayı",
+      "default": "500+"
+    },
+    {
+      "type": "text",
+      "id": "stat1_label",
+      "label": "İstatistik 1 Etiket",
+      "default": "Mutlu Müşteri"
+    },
+    {
+      "type": "text",
+      "id": "stat2_number",
+      "label": "İstatistik 2 Sayı",
+      "default": "1000+"
+    },
+    {
+      "type": "text",
+      "id": "stat2_label",
+      "label": "İstatistik 2 Etiket",
+      "default": "Tamamlanan Proje"
+    },
+    {
+      "type": "text",
+      "id": "stat3_number",
+      "label": "İstatistik 3 Sayı",
+      "default": "50+"
+    },
+    {
+      "type": "text",
+      "id": "stat3_label",
+      "label": "İstatistik 3 Etiket",
+      "default": "Ekip Üyesi"
+    }
+  ],
+  "presets": [
+    {
+      "name": "About"
+    }
+  ]
+}
+{% endschema %}
+

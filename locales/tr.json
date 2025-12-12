@@ -1,0 +1,29 @@
+{
+  "general": {
+    "meta": {
+      "tags": "\"{{ tags }}\" etiketli",
+      "page": "Sayfa {{ page }}"
+    }
+  },
+  "accessibility": {
+    "skip_to_text": "İçeriğe geç",
+    "refresh_page": "Bir seçim yapmak sayfanın tamamen yenilenmesine neden olur.",
+    "link_messages": {
+      "new_window": "Yeni pencerede açılır."
+    }
+  },
+  "sections": {
+    "cart": {
+      "cart_error": "Sepetiniz güncellenirken bir hata oluştu. Lütfen tekrar deneyin.",
+      "cart_quantity_error_html": "Bu üründen sepete yalnızca [quantity] adet ekleyebilirsiniz."
+    }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Sepete Ekle",
+      "sold_out": "Tükendi",
+      "unavailable": "Mevcut değil"
+    }
+  }
+}
+

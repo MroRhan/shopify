@@ -1,0 +1,108 @@
+<section class="features-section" id="products">
+  <div class="container">
+    <div class="features__header">
+      <h2 class="features__title">{{ section.settings.title | default: 'Ürünlerimiz ve Hizmetlerimiz' }}</h2>
+      <p class="features__subtitle">{{ section.settings.subtitle | default: 'İşletmenizi dönüştürmek için tasarlanmış yenilikçi teknoloji çözümlerimizi keşfedin.' }}</p>
+    </div>
+
+    <div class="features__grid">
+      {% for block in section.blocks %}
+        <div class="feature-card" {{ block.shopify_attributes }}>
+          <div class="feature-card__icon">
+            {% if block.settings.icon != blank %}
+              {{ block.settings.icon }}
+            {% else %}
+              <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="48" height="48" rx="8" fill="var(--color-primary)" opacity="0.1"/>
+                <path d="M24 16L28 20L24 24L20 20L24 16Z" fill="var(--color-primary)"/>
+              </svg>
+            {% endif %}
+          </div>
+          <h3 class="feature-card__title">{{ block.settings.title | default: 'Product Name' }}</h3>
+          <p class="feature-card__description">{{ block.settings.description | default: 'Product description goes here.' }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Features",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Ürünlerimiz ve Hizmetlerimiz"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Bölüm Alt Başlığı",
+      "default": "İşletmenizi dönüştürmek için tasarlanmış yenilikçi teknoloji çözümlerimizi keşfedin."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Cloud Solutions"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Scalable cloud infrastructure for modern businesses."
+        },
+        {
+          "type": "html",
+          "id": "icon",
+          "label": "Icon (SVG)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Features",
+      "blocks": [
+        {
+          "type": "feature",
+          "settings": {
+            "title": "Cloud Solutions",
+            "description": "Scalable cloud infrastructure for modern businesses."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "AI & Machine Learning",
+            "description": "Advanced AI solutions to automate and optimize your operations."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "Cybersecurity",
+            "description": "Protect your business with enterprise-grade security solutions."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "Data Analytics",
+            "description": "Transform data into actionable insights for better decision-making."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+

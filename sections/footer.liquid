@@ -1,0 +1,43 @@
+<footer class="footer-wrapper">
+  <div class="footer container">
+    <div class="footer__content">
+      <div class="footer__section">
+        <h3 class="footer__title">{{ settings.logo_text | default: 'TechCorp' }}</h3>
+        <p class="footer__description">Gelecek için yenilikçi teknoloji çözümleri.</p>
+      </div>
+
+      <div class="footer__section">
+        <h4 class="footer__heading">Hızlı Linkler</h4>
+        <ul class="footer__links">
+          <li><a href="{{ routes.root_url }}">Ana Sayfa</a></li>
+          <li><a href="#products">Ürünler</a></li>
+          <li><a href="#about">Hakkımızda</a></li>
+          <li><a href="#contact">İletişim</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__section">
+        <h4 class="footer__heading">İletişim</h4>
+        <ul class="footer__links">
+          <li>E-posta: info@techcorp.com</li>
+          <li>Telefon: +90 (555) 123-4567</li>
+          <li>Adres: Teknoloji Caddesi No:123, İstanbul</li>
+        </ul>
+      </div>
+
+      <div class="footer__section">
+        <h4 class="footer__heading">Bizi Takip Edin</h4>
+        <div class="footer__social">
+          <a href="#" aria-label="Facebook">Facebook</a>
+          <a href="#" aria-label="Twitter">Twitter</a>
+          <a href="#" aria-label="LinkedIn">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <p class="footer__copyright">{{ settings.footer_text | default: '© 2024 TechCorp. Tüm hakları saklıdır.' }}</p>
+    </div>
+  </div>
+</footer>
+

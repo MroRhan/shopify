@@ -1,0 +1,59 @@
+<section class="hero-section" id="home">
+  <div class="hero container">
+    <div class="hero__content">
+      <h1 class="hero__title">{{ section.settings.title | default: 'Yenilikçi Teknoloji Çözümleri' }}</h1>
+      <p class="hero__subtitle">{{ section.settings.subtitle | default: 'İşletmeleri dijital çağ için en son teknoloji ve yenilikçi çözümlerle güçlendiriyoruz.' }}</p>
+      <div class="hero__actions">
+        <a href="#products" class="button button--primary">{{ section.settings.cta_text | default: 'Ürünleri Keşfet' }}</a>
+        <a href="#contact" class="button button--secondary">{{ section.settings.cta_secondary_text | default: 'Hemen Başla' }}</a>
+      </div>
+    </div>
+    <div class="hero__image">
+      <div class="hero__placeholder">
+        <svg width="600" height="400" viewBox="0 0 600 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="600" height="400" fill="#f0f0f0"/>
+          <path d="M300 200L350 150L400 200L350 250L300 200Z" fill="var(--color-primary)" opacity="0.3"/>
+          <circle cx="300" cy="200" r="50" fill="var(--color-primary)"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Yenilikçi Teknoloji Çözümleri"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Alt Başlık",
+      "default": "İşletmeleri dijital çağ için en son teknoloji ve yenilikçi çözümlerle güçlendiriyoruz."
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Birincil Buton Metni",
+      "default": "Ürünleri Keşfet"
+    },
+    {
+      "type": "text",
+      "id": "cta_secondary_text",
+      "label": "İkincil Buton Metni",
+      "default": "Hemen Başla"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero"
+    }
+  ]
+}
+{% endschema %}
+

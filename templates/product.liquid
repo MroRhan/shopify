@@ -1,0 +1,96 @@
+<div class="product-wrapper">
+  <div class="container">
+    <div class="product">
+      <div class="product__images">
+        {% if product.featured_image %}
+          <img src="{{ product.featured_image | image_url: width: 800 }}" alt="{{ product.featured_image.alt | escape }}" class="product__main-image">
+        {% else %}
+          <div class="product__placeholder">
+            <svg width="600" height="600" viewBox="0 0 600 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="600" height="600" fill="#f0f0f0"/>
+              <text x="300" y="300" text-anchor="middle" fill="#999" font-size="24">Görsel Yok</text>
+            </svg>
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="product__info">
+        <h1 class="product__title">{{ product.title }}</h1>
+        <div class="product__price">
+          {{ product.price | money }}
+        </div>
+        <div class="product__description">
+          {{ product.description }}
+        </div>
+
+        <form action="{{ routes.cart_add_url }}" method="post" enctype="multipart/form-data">
+          <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+          <div class="product__quantity">
+            <label for="quantity">Miktar</label>
+            <input type="number" id="quantity" name="quantity" value="1" min="1">
+          </div>
+          <button type="submit" class="button button--primary product__add-to-cart">
+            {{ 'products.product.add_to_cart' | t }}
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .product-wrapper {
+    padding: var(--spacing-xl) 0;
+  }
+  .product {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-lg);
+  }
+  .product__main-image {
+    width: 100%;
+    border-radius: 8px;
+  }
+  .product__placeholder {
+    width: 100%;
+    background-color: var(--color-bg-light);
+    border-radius: 8px;
+  }
+  .product__title {
+    font-size: 2.5rem;
+    margin-bottom: var(--spacing-sm);
+  }
+  .product__price {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: var(--spacing-md);
+  }
+  .product__description {
+    margin-bottom: var(--spacing-md);
+    line-height: 1.8;
+  }
+  .product__quantity {
+    margin-bottom: var(--spacing-sm);
+  }
+  .product__quantity label {
+    display: block;
+    margin-bottom: var(--spacing-xs);
+  }
+  .product__quantity input {
+    width: 100px;
+    padding: var(--spacing-xs);
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+  }
+  .product__add-to-cart {
+    width: 100%;
+    margin-top: var(--spacing-sm);
+  }
+  @media (max-width: 768px) {
+    .product {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
